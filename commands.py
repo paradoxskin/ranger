@@ -60,16 +60,6 @@ class my_edit(Command):
 		# This is a generic tab-completion function that iterates through the
 		# content of the current directory.
 		return self._tab_directory_content()
-# first command
-class setAsBg(Command):
-	
-	"""
-	 target on a image and set it as backgrand picture
-	"""
-
-	def execute(self):
-		target_filename = self.fm.thisfile.path
-		self.fm.execute_command("feh --bg-center --no-fehbg " + target_filename)
 
 # copyed fzf
 class fzf_select(Command):
@@ -130,3 +120,28 @@ class fzf_select(Command):
                 self.fm.cd(selected)
             else:
                 self.fm.select_file(selected)
+
+# 01 setImageAsBg
+class setAsBg(Command):
+	
+	"""
+	 target on a image and set it as backgrand picture
+	"""
+
+	def execute(self):
+		target_filename = self.fm.thisfile.path
+		self.fm.execute_command("feh --bg-center --no-fehbg " + target_filename)
+
+# 02 paste2su
+p2filepath=""
+class p2yank(Command):
+	def execute(self):
+		global p2filepath
+		p2filepath = self.fm.thisfile.path
+
+class p2paste(Command):
+	def execute(self):
+		global p2filepath
+		cmd = "sudo cp {} {}"
+		ppath ="/".join(self.fm.thisfile.path.split("/")[:-1]) + "/" + p2filepath.split("/")[-1]
+		self.fm.execute_command(cmd.format(p2filepath,ppath))
