@@ -120,6 +120,38 @@ class fzf_select(Command):
                 self.fm.cd(selected)
             else:
                 self.fm.select_file(selected)
+# copy mkcd
+class mkcd(Command):
+    """
+    :mkcd <dirname>
+
+    Creates a directory with the name <dirname> and enters it.
+    """
+
+    def execute(self):
+        from os.path import join, expanduser, lexists
+        from os import makedirs
+        import re
+
+        dirname = join(self.fm.thisdir.path, expanduser(self.rest(1)))
+        if not lexists(dirname):
+            makedirs(dirname)
+
+            match = re.search('^/|^~[^/]*/', dirname)
+            if match:
+                self.fm.cd(match.group(0))
+                dirname = dirname[match.end(0):]
+
+            for m in re.finditer('[^/]+', dirname):
+                s = m.group(0)
+                if s == '..' or (s.startswith('.') and not self.fm.settings['show_hidden']):
+                    self.fm.cd(s)
+                else:
+                    ## We force ranger to load content before calling `scout`.
+                    self.fm.thisdir.load_content(schedule=False)
+                    self.fm.execute_console('scout -ae ^{}$'.format(s))
+        else:
+            self.fm.notify("file/directory exists!", bad=True)
 
 # 01 setImageAsBg
 class setAsBg(Command):
@@ -145,3 +177,32 @@ class p2paste(Command):
 		cmd = "sudo cp {} {}"
 		ppath ="/".join(self.fm.thisfile.path.split("/")[:-1]) + "/" + p2filepath.split("/")[-1]
 		self.fm.execute_command(cmd.format(p2filepath,ppath))
+
+# 03 func for acm
+"""
+ gdb need to check if c is -g , need to createfile to remind
+
+gcc *.cpp -o c
+gcc *.cpp -o c -g
+gdb c
+./c
+
+"""
+
+"""
+class ffacreate_file(Command):
+	def execute(self):
+		
+class ffagcc(Command):
+	def execute(self):
+		
+class ffagdb(Command):
+	def execute(self):
+		
+class ffarun(Command):
+	def execute(self):
+		
+class ffapy(Command):
+	def execute(self):
+		
+"""
