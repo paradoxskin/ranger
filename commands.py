@@ -180,29 +180,48 @@ class p2paste(Command):
 
 # 03 func for acm
 """
- gdb need to check if c is -g , need to createfile to remind
+gdb need to check if c is -g , need to createfile to remind
 
-gcc *.cpp -o c
-gcc *.cpp -o c -g
-gdb c
-./c
-
-"""
+gcc *.cpp -o .c
+gcc *.cpp -o .c -g
+gdb ./c
+./.c
 
 """
 class ffacreate_file(Command):
 	def execute(self):
+		if self.arg(1):
+			target_filename = self.rest(1)
+		else:
+			return
+		#cmd="touch {}" default open method is gvim(wtf?
+		#cmd="vim {}" edit config file can solve the problem
+		cmd="touch {}"
+		self.fm.execute_command(cmd.format(target_filename))
 		
 class ffagcc(Command):
 	def execute(self):
-		
-class ffagdb(Command):
-	def execute(self):
-		
+		filename = self.fm.thisfile.path.split("/")[-1]
+		#cmd="clear"
+		#self.fm.execute_command(cmd)
+		cmd="g++ {} -o .c"
+		self.fm.execute_command(cmd.format(filename))
+		#cmd="echo -e \"ok \n\""
+		#self.fm.execute_command(cmd)
+		print("  ")
+		cmd="read"
+		self.fm.execute_command(cmd)
+"""
+# make console in ranger is not perfect , i find the ` :vert term ` in vim doc , that is what i wanted
+
 class ffarun(Command):
 	def execute(self):
-		
+		thepath ="/".join(self.fm.thisfile.path.split("/")[:-1])
+		cmd=thepath+"/"+".c"
+		self.fm.execute_command(cmd)
+class ffagdb(Command):
+	def execute(self):
+
 class ffapy(Command):
 	def execute(self):
-		
 """
