@@ -211,6 +211,18 @@ class ffagcc(Command):
 		print("  ")
 		cmd="read"
 		self.fm.execute_command(cmd)
+# 04 function for daily use
+class ffdutypora(Command):
+	def execute(self):
+		filename = self.fm.thisfile.path.split("/")[-1]
+		cmd="typora {}"
+		self.fm.execute_command(cmd.format(filename))
+#05 make e to vim everything
+class ffduvim(Command):
+	def execute(self):
+		filename = self.fm.thisfile.path.split("/")[-1]
+		cmd="vim {}"
+		self.fm.execute_command(cmd.format(filename))
 """
 # make console in ranger is not perfect , i find the ` :vert term ` in vim doc , that is what i wanted
 
