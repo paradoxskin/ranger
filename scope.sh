@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -o noclobber -o noglob -o nounset -o pipefail
 IFS=$'\n'
 
@@ -115,6 +114,10 @@ handle_extension() {
             mediainfo "${FILE_PATH}" && exit 5
             exiftool "${FILE_PATH}" && exit 5
             ;; # Continue with next handler on failure
+		# Video
+		mp4)
+            ffmpegthumbnailer -i "${FILE_PATH}" -o "${IMAGE_CACHE_PATH}" -s 0 && exit 6
+            exit 1;;
     esac
 }
 
@@ -158,7 +161,7 @@ handle_image() {
             # Get embedded thumbnail
             ffmpeg -i "${FILE_PATH}" -map 0:v -map -0:V -c copy "${IMAGE_CACHE_PATH}" && exit 6
             # Get frame 10% into video
-            ffmpegthumbnailer -i "${FILE_PATH}" -o "${IMAGE_CACHE_PATH}" -s 0 && exit 6
+            #ffmpegthumbnailer -i "${FILE_PATH}" -o "${IMAGE_CACHE_PATH}" -s 0 && exit 6
             exit 1;;
 
         ## Audio
