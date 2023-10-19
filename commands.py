@@ -221,7 +221,7 @@ class ffdutypora(Command):
 class ffduvim(Command):
 	def execute(self):
 		filename = self.fm.thisfile.path.split("/")[-1]
-		cmd="vim {}"
+		cmd="nvim {}"
 		self.fm.execute_command(cmd.format(filename))
 """
 # make console in ranger is not perfect , i find the ` :vert term ` in vim doc , that is what i wanted
