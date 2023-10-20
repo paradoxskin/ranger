@@ -215,7 +215,7 @@ class ffagcc(Command):
 class ffdutypora(Command):
 	def execute(self):
 		filename = self.fm.thisfile.path.split("/")[-1]
-		cmd="typora {}"
+		cmd="typora {} &"
 		self.fm.execute_command(cmd.format(filename))
 #05 make e to vim everything
 class ffduvim(Command):
